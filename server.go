@@ -1,32 +1,14 @@
 package main
 
 import (
+	"go_htmx/config"
 	"go_htmx/service"
 	"log"
 	"net/http"
-
-	"github.com/spf13/viper"
 )
 
-func viperEnvVariable(key string) string {
-	viper.SetConfigFile(".env")
-	err := viper.ReadInConfig()
-
-	if err != nil {
-		log.Fatal("Error while reading .env")
-	}
-
-	value, ok := viper.Get(key).(string)
-
-	if !ok {
-		log.Fatal("Invalid type")
-	}
-
-	return value
-}
-
 func main() {
-	port := viperEnvVariable("PORT")
+	port := config.GetEnv("PORT")
 
 	http.HandleFunc("/", service.RootHandler)
 	http.HandleFunc("/increment", service.IncrementHandler)
